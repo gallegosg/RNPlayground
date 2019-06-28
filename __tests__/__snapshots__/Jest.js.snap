@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctyl 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#abbaab",
+      "flex": 1,
+    }
+  }
+>
+  <Text>
+     Jest 
+  </Text>
+</View>
+`;

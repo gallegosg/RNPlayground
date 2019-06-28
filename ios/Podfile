@@ -1,0 +1,7 @@
+platform :ios, '11.0'
+
+target 'RNPlayground' do
+  pod 'AppAuth', '>= 0.94'
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+end
