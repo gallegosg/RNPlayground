@@ -89,11 +89,6 @@ export default class Auth extends Component {
     }
   };
 
-  setModalVisible(visible) {
-    console.log(this.state.uri)
-    this.setState({modalVisible: visible});
-  }
-
   print = (syntheticEvent) => {
     const {nativeEvent} = syntheticEvent;
     console.log(nativeEvent)
@@ -142,41 +137,6 @@ export default class Auth extends Component {
                 <Text style={styles.buttonText}>Revoke</Text>
               </TouchableOpacity>}
           </View>
-
-          <View>
-              <Modal
-                animationType="slide"
-                transparent={false}
-                visible={this.state.modalVisible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                }}>
-                <SafeAreaView style={{flex: 1}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                        this.setModalVisible(!this.state.modalVisible);
-                    }}>
-                    <Text style={{fontSize: 20, marginLeft: 20}}>X</Text>
-                  </TouchableOpacity>
-                  <WebView
-                    allowsLinkPreview
-                    allowsBackForwardNavigationGestures
-                    onError={this.print}
-                    onLoad={this.print}
-                    source={{ uri: this.state.uri }}
-                    style={{ flex: 1 }}
-                  />
-                </SafeAreaView>
-              </Modal>
-
-              <TouchableOpacity
-                underlayColor={'#ddd'}
-                onPress={() => {
-                    this.setModalVisible(true);
-                }}>
-                <Text>WebView</Text>
-              </TouchableOpacity>
-            </View>
       </View>
     );
   }

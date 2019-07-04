@@ -42,6 +42,9 @@ export default class Camera extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={{alignItems: 'center'}}>
+          <Text>Hit Camera to take a picture or open the image picker</Text>
+        </View>
         <Image
           source={this.state.avatarSource}
           resizeMode={'contain'}
@@ -61,6 +64,7 @@ const styles = {
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
+    marginTop: 10
   },
   uploadAvatar: {
     flex: 0.8,

@@ -24,6 +24,9 @@ export default class EmailFormatVerify extends Component {
   render() {
     return (
       <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+        <View style={{alignItems: 'center'}}>
+          <Text>Enter an email address and hit verify</Text>
+        </View>
         <TextInput
           onFocus={() => this.setState({ message: "" })}
           placeholder={"email"}

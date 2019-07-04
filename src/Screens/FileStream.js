@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import RNFS from  "react-native-fs";
+import PopInButton from '../Components/PopInButton'
 
 export default class FileStream extends Component {
   constructor(props) {
@@ -8,12 +9,14 @@ export default class FileStream extends Component {
     this.state = {
       contents: "",
       text: "",
-      path: ""
+      file: ""
     };
   }
 
   writeFile = () => {
-    const path = RNFS.DocumentDirectoryPath + "/" + this.state.path;
+    const {file} = this.state
+    const fileName = file.includes(".txt") ? file : file + '.txt'
+    const path = RNFS.DocumentDirectoryPath + "/" + fileName;
     // write the file
     RNFS.writeFile(path, this.state.text, "utf8")
       .then(success => {
@@ -27,12 +30,12 @@ export default class FileStream extends Component {
   };
 
   readFile = () => {
-    const path = RNFS.DocumentDirectoryPath + "/" + this.state.path;
+    const {file} = this.state
+    const fileName = file.includes(".txt") ? file : file + '.txt'
+    const path = RNFS.DocumentDirectoryPath + "/" + fileName;
     // get a list of files and directories in the main bundle
     RNFS.readFile(path) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
       .then(result => {
-        console.log("GOT RESULT", result);
-
         this.setState({ contents: result, error: "" });
       })
 
@@ -43,12 +46,12 @@ export default class FileStream extends Component {
   };
 
   deleteFile = () => {
-    const path = RNFS.DocumentDirectoryPath + "/" + this.state.path;
+    const {file} = this.state
+    const fileName = file.includes(".txt") ? file : file + '.txt'
+    const path = RNFS.DocumentDirectoryPath + "/" + fileName;
     // delete a file
     RNFS.unlink(path) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
       .then(result => {
-        console.log("GOT RESULT", result);
-
         this.setState({ contents: '', error: "" });
       })
 
@@ -61,6 +64,11 @@ export default class FileStream extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={{alignItems: 'center'}}>
+          <Text>Enter the text you want to save.</Text>
+          <Text>Then enter the name of the file to save it to.</Text>
+          <Text>Delete will delete the entered file name if it exists.</Text>
+        </View>
         <View style={{ alignItems: "center" }}>
           <TextInput
             style={styles.input}
@@ -70,23 +78,23 @@ export default class FileStream extends Component {
           <TextInput
             placeholder={"File Name"}
             style={styles.input}
-            onChangeText={text => this.setState({ path: text })}
+            onChangeText={text => this.setState({ file: text })}
           />
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-          <TouchableOpacity style={styles.button} onPress={this.writeFile}>
+          <PopInButton style={styles.button} onPress={this.writeFile}>
             <Text style={styles.buttonText}>write</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.readFile}>
+          </PopInButton>
+          <PopInButton style={styles.button} onPress={this.readFile}>
             <Text style={styles.buttonText}>read</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonDelete} onPress={this.deleteFile}>
+          </PopInButton>
+          <PopInButton style={styles.buttonDelete} onPress={this.deleteFile}>
             <Text style={styles.buttonText}>delete</Text>
-          </TouchableOpacity>
+          </PopInButton>
         </View>
         <Text style={{ alignSelf: "center" }}>{this.state.contents}</Text>
-        <Text style={{ alignSelf: "center", color: "red" }}>
+        <Text style={{ flex: 0.2, alignSelf: "center", color: "red" }}>
           {this.state.error}
         </Text>
       </View>
@@ -98,7 +106,8 @@ const styles = {
   container: {
     flex: 1,
     justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
+    marginHorizontal: 20,
   },
   input: {
     borderWidth: 1,
@@ -109,12 +118,14 @@ const styles = {
   button: {
     backgroundColor: "teal",
     padding: 10,
-    margin: 10
+    margin: 10,
+    borderRadius: 3,
   },
   buttonDelete: {
     backgroundColor: "red",
     padding: 10,
-    margin: 10
+    margin: 10,
+    borderRadius: 3,
   },
   buttonText: {
     color: "#fff",
