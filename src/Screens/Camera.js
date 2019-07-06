@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, Image, Dimensions, Animated } from 'react-native';
 import ImagePicker from 'react-native-image-picker'
+import PopInButton from '../Components/PopInButton';
 const { width } = Dimensions.get('screen')
 
 export default class Camera extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      uploadAvatar: ''
+      uploadAvatar: '',
+      avatarSource: null
     };
+  }
+
+  componentWillMount = () => {
+    this.animatedBackgroundColor = new Animated.Value(1);
   }
 
   openImagePicker = () => {
@@ -34,27 +40,60 @@ export default class Camera extends Component {
 
         this.setState({
           avatarSource: source,
+        }, () => {
+          Animated.timing(this.animatedBackgroundColor, {
+            toValue: 150,
+            duration: 1000
+          }).start();
         });
       }
     })
   }
+  removePhoto = () => {
+    this.setState({
+      avatarSource: null,
+    }, () => {
+      Animated.timing(this.animatedBackgroundColor, {
+        toValue: 150,
+        duration: 1000
+      }).start();
+    });
+  }
 
   render() {
+    const isShowingPhoto = this.state.avatarSource;
+
+    const whiteToBlack = this.animatedBackgroundColor.interpolate({
+      inputRange: [0, 150],
+      outputRange: ['rgb(255,255,255)', 'rgb(0, 0, 0)']
+    })
+
+    const blackToWhite = this.animatedBackgroundColor.interpolate({
+      inputRange: [0, 150],
+      outputRange: ['rgb(0, 0, 0)', 'rgb(255, 255, 255)']
+    })
+
     return (
-      <View style={styles.container}>
+      <Animated.View style={[styles.container, {backgroundColor: isShowingPhoto ? blackToWhite : whiteToBlack}]}>
         <View style={{alignItems: 'center'}}>
-          <Text>Hit Camera to take a picture or open the image picker</Text>
+          <Text style={{color: '#fff'}}>Hit Camera to take a picture or open the image picker</Text>
         </View>
-        <Image
-          source={this.state.avatarSource}
-          resizeMode={'contain'}
-          style={styles.uploadAvatar} />
-        <TouchableOpacity style={styles.textContainer} onPress={this.openImagePicker}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.text}>Camera</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+        {!!this.state.avatarSource &&
+          <Image
+            source={this.state.avatarSource}
+            resizeMode={'contain'}
+            style={styles.uploadAvatar} />
+        }
+        <View style={{flex: 0.1, justifyContent: 'space-around', flexDirection: 'row', width: '100%'}}>
+          <PopInButton style={[styles.buttonContainer, {backgroundColor: isShowingPhoto ? whiteToBlack : blackToWhite}]} onPress={this.openImagePicker}>
+              <Text style={styles.text}>Camera</Text>
+          </PopInButton>
+          <PopInButton style={styles.buttonContainer} onPress={this.removePhoto}>
+              <Text style={styles.text}>remove</Text>
+          </PopInButton>
+        </View>
+        
+      </Animated.View>
     );
   }
 }
@@ -62,9 +101,9 @@ export default class Camera extends Component {
 const styles = {
   container: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10
+    paddingTop: 10
   },
   uploadAvatar: {
     flex: 0.8,
@@ -78,9 +117,13 @@ const styles = {
     color: '#000'
   },
   buttonContainer: {
-    backgroundColor: '#c1d9ff',
+    width: '40%',
+    height: '80%',
+    backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingVertical: 5,
     borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }
