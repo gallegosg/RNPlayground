@@ -14,7 +14,10 @@ const Navigation = createStackNavigator({
         }
     },
     EmailFormatVerify: {
-        screen: EmailFormatVerify
+        screen: EmailFormatVerify,
+        navigationOptions: {
+            title: 'Email Format Verification'
+        }
     },
     FileStream: {
         screen: FileStream,
@@ -43,8 +46,11 @@ const Navigation = createStackNavigator({
 }, {
     defaultNavigationOptions: {
         headerStyle: {
-            backgroundColor: '#c1d9ff',
+            backgroundColor: '#fffafa',
         },
+        headerTitleStyle: {
+            color: '#222'
+        }
     }
 });
 

@@ -27,7 +27,7 @@ export default class Home extends Component {
         {
           name: 'Auth',
           screen: 'Auth',
-          tileColor: '#d4c1ff'
+          tileColor: '#c2dfff'
         },
         {
           name: 'Web View',
@@ -69,10 +69,10 @@ export default class Home extends Component {
 
 const styles = {
   container: {
+    backgroundColor,
     flex: 1, 
     alignItems: 'center',
     justifyContent: 'space-around',
-    backgroundColor: '#78666f'
   },
   listContainer: {
     flex: 1, 
@@ -80,8 +80,8 @@ const styles = {
   },
   tileContainer: {
     margin: 10,
-    width: width / 2.5,
-    height: width / 2.5,
+    width: width / 2.4,
+    height: width / 2.4,
     backgroundColor: '#c1d9ff',
     alignItems: 'center',
     justifyContent: 'space-around',
