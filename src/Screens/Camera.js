@@ -14,9 +14,12 @@ export default class Camera extends Component {
   }
 
   componentWillMount = () => {
-    this.animatedBackgroundColor = new Animated.Value(1);
+    this.animatedFadeToBlack = new Animated.Value(1);
   }
 
+  /**
+   * Bring up the image picker
+   */
   openImagePicker = () => {
     const options = {
       title: 'Select Image',
@@ -41,7 +44,7 @@ export default class Camera extends Component {
         this.setState({
           avatarSource: source,
         }, () => {
-          Animated.timing(this.animatedBackgroundColor, {
+          Animated.timing(this.animatedFadeToBlack, {
             toValue: 150,
             duration: 1000
           }).start();
@@ -49,34 +52,25 @@ export default class Camera extends Component {
       }
     })
   }
+  /**
+   * clears the currently showing photo
+   */
   removePhoto = () => {
     this.setState({
       avatarSource: null,
-    }, () => {
-      Animated.timing(this.animatedBackgroundColor, {
-        toValue: 150,
-        duration: 1000
-      }).start();
-    });
+    })
   }
 
   render() {
     const isShowingPhoto = this.state.avatarSource;
-
-    const whiteToBlack = this.animatedBackgroundColor.interpolate({
+    const whiteToBlack = this.animatedFadeToBlack.interpolate({
       inputRange: [0, 150],
       outputRange: ['rgb(255,255,255)', 'rgb(0, 0, 0)']
     })
-
-    const blackToWhite = this.animatedBackgroundColor.interpolate({
-      inputRange: [0, 150],
-      outputRange: ['rgb(0, 0, 0)', 'rgb(255, 255, 255)']
-    })
-
     return (
-      <Animated.View style={[styles.container, {backgroundColor: isShowingPhoto ? blackToWhite : whiteToBlack}]}>
+      <Animated.View style={[styles.container, {backgroundColor: whiteToBlack}]}>
         <View style={{alignItems: 'center'}}>
-          <Text style={{color: '#fff'}}>Hit Camera to take a picture or open the image picker</Text>
+          <Text>Hit Camera to take a picture or open the image picker</Text>
         </View>
         {!!this.state.avatarSource &&
           <Image
@@ -85,14 +79,15 @@ export default class Camera extends Component {
             style={styles.uploadAvatar} />
         }
         <View style={{flex: 0.1, justifyContent: 'space-around', flexDirection: 'row', width: '100%'}}>
-          <PopInButton style={[styles.buttonContainer, {backgroundColor: isShowingPhoto ? whiteToBlack : blackToWhite}]} onPress={this.openImagePicker}>
+          <PopInButton style={styles.buttonContainer} onPress={this.openImagePicker}>
               <Text style={styles.text}>Camera</Text>
           </PopInButton>
-          <PopInButton style={styles.buttonContainer} onPress={this.removePhoto}>
-              <Text style={styles.text}>remove</Text>
-          </PopInButton>
+          {!!isShowingPhoto &&
+            <PopInButton style={styles.buttonContainer} onPress={this.removePhoto}>
+                <Text style={[styles.text, {color: 'red'}]}>Remove</Text>
+            </PopInButton>
+          }
         </View>
-        
       </Animated.View>
     );
   }
@@ -113,7 +108,7 @@ const styles = {
     flex: 0.2,
   },
   text: {
-    fontSize: 26,
+    fontSize: 24,
     color: '#000'
   },
   buttonContainer: {
@@ -124,6 +119,8 @@ const styles = {
     paddingVertical: 5,
     borderRadius: 5,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderColor: '#000',
+    borderWidth: 1,
   }
 }
