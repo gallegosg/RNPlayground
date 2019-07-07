@@ -14,6 +14,10 @@ export default class FileStream extends Component {
     };
   }
 
+  /**
+   * take text in input text box and save to
+   * file in file name input box
+   */
   writeFile = () => {
     const {file} = this.state
     const fileName = file.includes(".txt") ? file : file + '.txt'
@@ -29,6 +33,9 @@ export default class FileStream extends Component {
       });
   };
 
+  /**
+   * Read file entered in file name input
+   */
   readFile = () => {
     const {file} = this.state
     const fileName = file.includes(".txt") ? file : file + '.txt'
@@ -45,6 +52,9 @@ export default class FileStream extends Component {
       });
   };
 
+  /**
+   * Delete the file entered in the file name input
+   */
   deleteFile = () => {
     const {file} = this.state
     const fileName = file.includes(".txt") ? file : file + '.txt'

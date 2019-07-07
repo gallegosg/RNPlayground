@@ -33,6 +33,11 @@ export default class Home extends Component {
           name: 'Web View',
           screen: 'WebView',
           tileColor: '#ffd4c1'
+        },
+        {
+          name: 'Masonry',
+          screen: 'Masonry',
+          tileColor: '#ffc1e1'
         }
       ]
     };

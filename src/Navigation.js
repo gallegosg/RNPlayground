@@ -5,6 +5,7 @@ import Home from './Screens/Home';
 import WebView from './Screens/Webview'
 import Auth from './Screens/Auth'
 import Camera from './Screens/Camera'
+import Masonry from './Screens/Masonry'
 
 const Navigation = createStackNavigator({
     Home: {
@@ -41,6 +42,12 @@ const Navigation = createStackNavigator({
         screen: Camera,
         navigationOptions: {
             title: 'Camera'
+        }
+    },
+    Masonry: {
+        screen: Masonry,
+        navigationOptions: {
+            title: 'Masonry'
         }
     }
 }, {
