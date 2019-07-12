@@ -12,32 +12,32 @@ export default class Home extends Component {
         {
           name: 'Verify Email',
           screen: 'EmailFormatVerify',
-          tileColor: '#c1fff4'
+          tileColor: '#ededed'
         },
         {
           name: 'File Stream',
           screen: 'FileStream',
-          tileColor: '#e3ffc1'
+          tileColor: '#ddd'
         },
         {
           name: 'Camera',
           screen: 'Camera',
-          tileColor: '#ffc1e1'
+          tileColor: '#dedede'
         },
         {
           name: 'Auth',
           screen: 'Auth',
-          tileColor: '#c2dfff'
+          tileColor: '#eee'
         },
         {
           name: 'Web View',
           screen: 'WebView',
-          tileColor: '#ffd4c1'
+          tileColor: '#eee'
         },
         {
           name: 'Masonry',
           screen: 'Masonry',
-          tileColor: '#ffc1e1'
+          tileColor: '#ddd'
         }
       ]
     };
@@ -86,7 +86,7 @@ const styles = {
   tileContainer: {
     margin: 10,
     width: width / 2.4,
-    height: width / 2.4,
+    height: width / 3,
     backgroundColor: '#c1d9ff',
     alignItems: 'center',
     justifyContent: 'space-around',

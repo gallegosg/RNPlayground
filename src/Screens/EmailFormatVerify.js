@@ -1,13 +1,36 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, AsyncStorage } from "react-native";
+import Tooltip from 'react-native-walkthrough-tooltip'
 
 export default class EmailFormatVerify extends Component {
   constructor(props) {
     super(props);
     this.state = {
       text: "",
-      email: ""
+      email: "",
+      isTooltipVisible: false
     };
+  }
+
+  componentDidMount = () => {
+    this.showTooltip()
+  }
+
+  /**
+   * Check if tool tip has been shown
+   * display tool tip if it has not
+   */
+  showTooltip = async () => {
+    try {
+      const shownToolTip = await AsyncStorage.getItem('@EmailVerify:shownToolTip');
+      if(!shownToolTip){
+        setTimeout(async () => this.setState({isTooltipVisible: true}, async () => {
+          await AsyncStorage.setItem('@EmailVerify:shownToolTip', JSON.stringify(true));
+        }), 500)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   /**
@@ -37,9 +60,18 @@ export default class EmailFormatVerify extends Component {
           onEndEditing={this.verifyEmail}
           onChangeText={text => this.setState({ email: text })}
         />
-        <TouchableOpacity onPress={this.verifyEmail}>
-          <Text style={{ color: "#444", fontSize: 20 }}>Verify</Text>
-        </TouchableOpacity>
+
+        <Tooltip
+          animated
+          isVisible={this.state.isTooltipVisible}
+          content={<Text>Click this to check email format</Text>}
+          placement={'bottom'}
+          onClose={() => this.setState({isTooltipVisible: false})}>
+            <TouchableOpacity onPress={this.verifyEmail}>
+              <Text style={{ color: "#444", fontSize: 20 }}>Verify</Text>
+            </TouchableOpacity>
+        </Tooltip>
+
         <View style={styles.statusContainer}>
           <Text
             style={[styles.statusText, { color: this.state.color}]}
